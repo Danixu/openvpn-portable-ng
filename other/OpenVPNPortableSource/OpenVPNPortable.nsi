@@ -41,6 +41,7 @@ SilentInstall Silent
 ;ShowInstDetails show
 
 !system 'md "${OutputFolder}"'
+!system `md "${OutputFolder}\app"`
 
 # Include language files
 !include "Lang\OpenVPNPortable\*.nsh"
@@ -72,13 +73,17 @@ ${StrLoc}
 
 
 Section "Main"
-	CreateDirectory "$EXEDIR\Data\log"
+	CreateDirectory "$EXEDIR\data\log"
+	CreateDirectory "$EXEDIR\data\config"
 	
 	${IfFileExists} $0 ${INIFILE}
 	${If} $0 == False
-		SetOutPath "$EXEDIR\Data"
+		SetOutPath "$EXEDIR\data"
 		File "OpenVPNPortable.ini"
 	${EndIf}
+	
+	SetOutPath "$EXEDIR\app\drivers"
+	File /r "drivers\*.*"
 	
 	# Allow download popups to be showed.
 	setsilent normal
